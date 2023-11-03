@@ -1,0 +1,65 @@
+@model IEnumerable<MVC.Controllers.tasks.controller.cardRes.CardResp>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a href="#" id="createNewCard">Create New</a>
+</p>
+
+<div id="createCardForm" style="display: none;"></div>
+
+<form asp-action="Get" method="get">
+    <input type="text" name="id" placeholder="Search by ID" />
+    <input type="submit" value="Search" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nameTask)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nameTask)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#createNewCard").click(function () {
+                $.get('@Url.Action("CreateCardForm", "Card")', function (data) {
+                    $("#createCardForm").html(data).show();
+                });
+            });
+
+            $("#createCardForm").on('click', '#cancelCreateCard', function () {
+                $("#createCardForm").hide();
+            });
+        });
+    </script>
+}

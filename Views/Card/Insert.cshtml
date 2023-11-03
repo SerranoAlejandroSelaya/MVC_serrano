@@ -1,0 +1,47 @@
+@model MVC.Controllers.tasks.controller.CardReq.CardReq
+
+@{
+    ViewData["Title"] = "Insert";
+}
+
+<h2>Create New Task</h2>
+
+<form asp-action="Insert" method="post">
+    <div class="form-group">
+        <label asp-for="idUser" class="control-label"></label>
+        <input asp-for="idUser" class="form-control" />
+        <span asp-validation-for="idUser" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="nameTask" class="control-label"></label>
+        <input asp-for="nameTask" class="form-control" />
+        <span asp-validation-for="nameTask" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="idChecks" class="control-label"></label>
+        <input asp-for="idChecks" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="description" class="control-label"></label>
+        <input asp-for="description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="status" class="control-label"></label>
+        <select asp-for="status" asp-items="@Html.GetEnumSelectList<TaskStatus>()"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="storyP" class="control-label"></label>
+        <input asp-for="storyP" type="number" min=0 step=1 value=0 />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
