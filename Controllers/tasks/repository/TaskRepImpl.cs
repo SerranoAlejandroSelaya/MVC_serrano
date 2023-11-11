@@ -1,4 +1,6 @@
 
+using MongoDB.Bson;
+
 namespace MVC.Controllers.tasks.repository;
 
 using MVC.Controllers.tasks.entity;
@@ -18,22 +20,6 @@ public class TaskRepImpl : ITaskRep
     public async Task<IEnumerable<Card>> GetAllCardsAsync()
     {
         return await _cards.Find(_ => true).ToListAsync();
-    }
-    
-    public async Task<IEnumerable<Card>> GetAllCardsByUserIdAsync(string idUser)
-    {
-        return await _cards.Find(card => card.idUser == idUser).ToListAsync();
-    }
-
-
-    public async Task<IEnumerable<Card>> GetAllCardsByStatusAsync(string idUser, string status)
-    {
-        return await _cards.Find(card => card.idUser == idUser && card.status == status).ToListAsync();
-    }
-    
-    public async Task<Card> GetCardByIdAsync(string id)
-    {
-        return await _cards.Find(card => card.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<Card> InsertCardAsync(Card card)
@@ -64,5 +50,17 @@ public class TaskRepImpl : ITaskRep
     {
         var result = await _cards.DeleteOneAsync(card => card.Id == id);
         return result.IsAcknowledged && result.DeletedCount > 0;
+    }
+    
+    public async Task<IEnumerable<Card>> SearchCardsAsync(string searchTerm)
+    {
+        var filter = Builders<Card>.Filter.Or(
+            Builders<Card>.Filter.Regex("nameTask", new BsonRegularExpression($".*{searchTerm}.*", "i")),
+            Builders<Card>.Filter.Regex("description", new BsonRegularExpression($".*{searchTerm}.*", "i")),
+            Builders<Card>.Filter.Regex("status", new BsonRegularExpression($".*{searchTerm}.*", "i"))
+        );
+        
+        var result = await _cards.Find(filter).ToListAsync();
+        return result;
     }
 }
