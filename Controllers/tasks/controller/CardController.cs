@@ -49,7 +49,7 @@ namespace MVC.Controllers.tasks.controller
                 return NotFound();
             }
 
-            return View("Index", updatedCard);
+            return View("Index", await _sev.GetAllCardsAsync());
         }
 
         public async Task<IActionResult> Delete([NotNull] string id)
