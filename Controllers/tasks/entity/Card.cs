@@ -6,17 +6,17 @@ public class Card
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
     [BsonElement("idUser")]
-    public string idUser { get; set; } = "";
+    public string? idUser { get; set; } = "";
     [BsonElement("idChecks")]
-    public string idChecks { get; set; } = "";
+    public string? idChecks { get; set; } = "";
     [BsonElement("nameTask")]
-    public string nameTask { get; set; } = "";
+    public string? nameTask { get; set; } = "";
     [BsonElement("description")]
-    public string description { get; set; } = "";
+    public string? description { get; set; } = "";
     [BsonElement("storyP")]
     public int? storyP { get; set; } = null;
     [BsonElement("status")]
-    public string status { get; set; } = "";
+    public string? status { get; set; } = "";
 }

@@ -21,6 +21,12 @@ public class TaskRepImpl : ITaskRep
     {
         return await _cards.Find(_ => true).ToListAsync();
     }
+    
+    public async Task<Card> GetCardById(string id)
+    {
+        return await _cards.Find(c => c.Id == id).FirstOrDefaultAsync();
+    }
+
 
     public async Task<Card> InsertCardAsync(Card card)
     {
@@ -39,7 +45,7 @@ public class TaskRepImpl : ITaskRep
     {
         var result = await _cards.ReplaceOneAsync(c => c.Id == id, card);
         
-        if (!result.IsAcknowledged || result.ModifiedCount < 0)
+        if (!result.IsAcknowledged || result.ModifiedCount < 0 || Equals(result,null))
         {
             throw new Exception($"Error al insertar el documento:");
         }
@@ -57,7 +63,8 @@ public class TaskRepImpl : ITaskRep
         var filter = Builders<Card>.Filter.Or(
             Builders<Card>.Filter.Regex("nameTask", new BsonRegularExpression($".*{searchTerm}.*", "i")),
             Builders<Card>.Filter.Regex("description", new BsonRegularExpression($".*{searchTerm}.*", "i")),
-            Builders<Card>.Filter.Regex("status", new BsonRegularExpression($".*{searchTerm}.*", "i"))
+            Builders<Card>.Filter.Regex("status", new BsonRegularExpression($".*{searchTerm}.*", "i")),
+            Builders<Card>.Filter.Regex("storyP", new BsonRegularExpression($".*{searchTerm}.*", "i"))
         );
         
         var result = await _cards.Find(filter).ToListAsync();

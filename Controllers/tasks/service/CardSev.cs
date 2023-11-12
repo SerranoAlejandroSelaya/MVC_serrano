@@ -25,6 +25,12 @@ public class CardSev
         return cardResponses;
     }
 
+    public async Task<CardResp> GetCardById(string id)
+    {
+        var card = await _rep.GetCardById(id);
+        return CardResp.CardToResponse(card);
+    }
+
     public async Task<CardResp> InsertCardAsync(CardReq card)
     {
         var result = await _rep.InsertCardAsync(

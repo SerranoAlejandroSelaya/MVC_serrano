@@ -27,29 +27,38 @@ namespace MVC.Controllers.tasks.controller
         [HttpPost]
         public async Task<IActionResult> Insert(CardReq.CardReq card)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Index", await _sev.GetAllCardsAsync());
-            }
-
             await _sev.InsertCardAsync(card);
-            return RedirectToAction("Index");
+            return Redirect("/");
         }
-
-        public async Task<IActionResult> Update([NotNull] string id, [FromBody] CardReq.CardReq card)
+        
+        [HttpGet]
+        public async Task<IActionResult> GetCardById(string id)
         {
-            if (Equals(card, null))
+            if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
+            var card = await _sev.GetCardById(id);
+            if (Equals(card,null))
+            {
+                return NotFound();
+            }
+            ViewBag.IsUpdate = true;
+            ViewBag.CardData = card;
+            return PartialView("_UpdateCardForm", CardReq.CardReq.ResponseToReq(card));
+        }
+
+
+        public async Task<IActionResult> Update([NotNull] string id, [FromBody] CardReq.CardReq card)
+        {
+            Console.WriteLine(id);
 
             CardResp updatedCard = await _sev.UpdateCardAsync(id, card);
             if (Equals(updatedCard, null))
             {
                 return NotFound();
             }
-
-            return View("Index", await _sev.GetAllCardsAsync());
+            return View("/");
         }
 
         public async Task<IActionResult> Delete([NotNull] string id)
@@ -60,7 +69,7 @@ namespace MVC.Controllers.tasks.controller
                 return NotFound();
             }
 
-            return View("Index", await _sev.GetAllCardsAsync());
+            return Redirect("/");
         }
         
         public async Task<IActionResult> Index(string search)

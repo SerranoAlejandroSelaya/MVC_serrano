@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MVC.Controllers.tasks.entity;
 
 namespace MVC.Controllers.tasks.controller.cardRes;
@@ -23,6 +24,20 @@ public class CardResp
             description = card.description,
             storyP = card.storyP,
             status = card.status
+        };
+    }
+    
+    public static Card RequestToCard(CardResp req)
+    {
+        return new Card
+        {
+            Id =  ObjectId.GenerateNewId().ToString(),
+            idUser = req.idUser,
+            idChecks = req.idChecks,
+            nameTask = req.nameTask,
+            description = req.description,
+            storyP = req.storyP,
+            status = req.status.ToString()
         };
     }
 }

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MVC.Controllers.tasks.entity;
 using MongoDB.Bson;
+using MVC.Controllers.tasks.controller.cardRes;
 
 namespace MVC.Controllers.tasks.controller.CardReq;
 
@@ -26,6 +27,18 @@ public class CardReq
             description = req.description,
             storyP = req.storyP,
             status = req.status.ToString()
+        };
+    }
+    
+    public static CardReq ResponseToReq(CardResp req)
+    {
+        return new CardReq()
+        {
+            idUser = req.idUser,
+            idChecks = req.idChecks,
+            nameTask = req.nameTask,
+            description = req.description,
+            storyP = req.storyP,
         };
     }
 }
