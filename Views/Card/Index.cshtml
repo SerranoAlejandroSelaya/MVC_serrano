@@ -54,7 +54,7 @@
                 </td>
 
                 <td>
-                    <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="" class="update" id="update" >Update</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
@@ -74,6 +74,13 @@
             $("#createCardForm").on('click', '#cancelCreateCard', function () {
                 $("#createCardForm").hide();
             });
+            
+            $("#update").on('click', function () {
+                 alert("For the new version");
+                 $("#update").hide();
+            });
+
         });
     </script>
 }
+

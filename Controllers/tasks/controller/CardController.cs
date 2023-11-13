@@ -51,8 +51,6 @@ namespace MVC.Controllers.tasks.controller
 
         public async Task<IActionResult> Update([NotNull] string id, [FromBody] CardReq.CardReq card)
         {
-            Console.WriteLine(id);
-
             CardResp updatedCard = await _sev.UpdateCardAsync(id, card);
             if (Equals(updatedCard, null))
             {
